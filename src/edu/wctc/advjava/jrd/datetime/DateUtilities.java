@@ -67,9 +67,12 @@ public class DateUtilities {
      * 
      * @param localDate - a LocalDate object
      * @return a String formatted according to the pattern implemented by the formatter
-     * @throws IllegalArgumentException if parameter is not LocalDate object or is null
+     * @throws NullPointerException if parameter is not LocalDate object or is null
      */
     public final String toString(LocalDate localDate) {
+        if (localDate == null) {
+            throw new NullPointerException("A LocalDate object must be provided!");
+        }
         return this.getFormatter().format(localDate);
     }
     
@@ -143,9 +146,12 @@ public class DateUtilities {
      * 
      * @param dateOne - first LocalDateTime object
      * @param dateTwo - another LocalDateTime object to find the difference between the first
-     * @return Period object specifying the time difference between the two parameters
+     * @return LocalDateTime object specifying the time difference between the two parameters
      */
     public final LocalDateTime getDateDifference(LocalDateTime dateOne, LocalDateTime dateTwo) {
+        if (!this.getDateValidator().isDateValid(dateOne.toString()) || !this.getDateValidator().isDateValid(dateTwo.toString())) {
+            throw new IllegalArgumentException("One or more dates provided aren't valid!");
+        }
         long diffInDays = ChronoUnit.DAYS.between(dateOne, dateTwo);
         long diffInHours = ChronoUnit.HOURS.between(dateOne, dateTwo);
         long diffInMinutes = ChronoUnit.MINUTES.between(dateOne, dateTwo);
